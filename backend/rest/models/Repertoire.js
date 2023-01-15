@@ -19,4 +19,4 @@ const repetoireSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model("repetoire", repetoireSchema);
+module.exports = mongoose.model("Repetoire", repetoireSchema);
