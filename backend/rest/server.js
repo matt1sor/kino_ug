@@ -3,9 +3,14 @@ const https = require("https");
 const fs = require("fs");
 const path = require("path");
 const app = express();
-const port = 5112;
+const port = 5556;
+const usersRouter = require("../rest/routes/Users");
+require("dotenv").config({ path: "../.env" });
 const cors = require("cors");
 const mongoose = require("mongoose");
+
+mongoose.set("strictQuery", false);
+
 const ssl = https.createServer(
   {
     key: fs.readFileSync(path.join(__dirname, "cert", "klucz_nopass.pem")),
@@ -16,6 +21,7 @@ const ssl = https.createServer(
 
 app.use(cors());
 app.use(express.json());
+app.use("/users", usersRouter);
 
 mongoose
   .connect("mongodb://localhost:27017/kino")

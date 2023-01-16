@@ -14,6 +14,15 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  day: {
+    type: Date,
+    required: true,
+  },
+  owner: {
+    type: mongoose.Schema.Types.ObjectId,
+    required: true,
+    ref: "Users",
+  },
 });
 
 module.exports = mongoose.model("Order", orderSchema);
