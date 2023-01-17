@@ -40,7 +40,7 @@ router.post("/add", authUser, authAdmin, async (req, res) => {
       });
       return res.status(201).send({ newMovie: newMovie.id });
     }
-    return res.status(401).send("This login already exists");
+    return res.status(401).send("This movie already exists");
   } catch (err) {
     res.status(500).send(err);
   }

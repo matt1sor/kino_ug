@@ -6,6 +6,7 @@ const app = express();
 const port = 5556;
 const usersRouter = require("../rest/routes/Users");
 const moviesRouter = require("../rest/routes/Movies");
+const repertoireRouter = require("../rest/routes/Repertoire");
 
 require("dotenv").config({ path: "../.env" });
 const cors = require("cors");
@@ -24,7 +25,7 @@ const ssl = https.createServer(
 app.use(cors());
 app.use(express.json());
 app.use("/users", usersRouter);
-
+app.use("/repertoire", repertoireRouter);
 app.use("/movies", moviesRouter);
 
 mongoose
