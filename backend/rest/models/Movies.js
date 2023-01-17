@@ -18,14 +18,14 @@ const moviesSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  director: { nameSchema, required: true },
-  actors: [{ nameSchema, required: true }],
+  director: { type: nameSchema, required: true },
+  actors: { type: [nameSchema], required: true },
   time: {
     type: Number,
     required: true,
   },
   poster: {
-    type: Image,
+    type: String,
   },
   trailer: {
     type: String,

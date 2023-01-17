@@ -5,6 +5,8 @@ const path = require("path");
 const app = express();
 const port = 5556;
 const usersRouter = require("../rest/routes/Users");
+const moviesRouter = require("../rest/routes/Movies");
+
 require("dotenv").config({ path: "../.env" });
 const cors = require("cors");
 const mongoose = require("mongoose");
@@ -22,6 +24,8 @@ const ssl = https.createServer(
 app.use(cors());
 app.use(express.json());
 app.use("/users", usersRouter);
+
+app.use("/movies", moviesRouter);
 
 mongoose
   .connect("mongodb://localhost:27017/kino")
