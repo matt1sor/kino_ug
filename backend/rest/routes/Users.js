@@ -4,6 +4,7 @@ const jwt = require("jsonwebtoken");
 const Users = require("../models/Users");
 const bcrypt = require("bcryptjs");
 const { authUser, authAdmin } = require("../routes/Auth");
+const ObjectId = require("mongodb").ObjectId;
 //const { registerValidation, loginValidation } = require("../validation");
 
 router.get("/", authUser, authAdmin, async (req, res) => {
@@ -53,4 +54,31 @@ router.post("/login", async (req, res) => {
   }
 });
 
+router.delete("/:id", authUser, async (req, res) => {
+  let id = { _id: ObjectId(req.params.id) };
+  try {
+    await Users.deleteOne(id);
+    res.status(200).send("Success!");
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+router.patch("/:id/edit", authUser, async (req, res) => {
+  let id = { _id: ObjectId(req.params.id) };
+  let updatedValues = {
+    $set: {
+      name: req.body.name,
+      login: req.body.login,
+      password: req.body.password,
+    },
+  };
+
+  try {
+    await Users.updateOne(id, updatedValues);
+    res.status(200).send("Updated!!!");
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
 module.exports = router;
