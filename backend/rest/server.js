@@ -7,6 +7,7 @@ const port = 5556;
 const usersRouter = require("../rest/routes/Users");
 const moviesRouter = require("../rest/routes/Movies");
 const repertoireRouter = require("../rest/routes/Repertoire");
+const orderRouter = require("../rest/routes/Orders");
 
 require("dotenv").config({ path: "../.env" });
 const cors = require("cors");
@@ -27,6 +28,7 @@ app.use(express.json());
 app.use("/users", usersRouter);
 app.use("/repertoire", repertoireRouter);
 app.use("/movies", moviesRouter);
+app.use("/order", orderRouter);
 
 mongoose
   .connect("mongodb://localhost:27017/kino")

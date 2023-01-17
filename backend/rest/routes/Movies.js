@@ -5,7 +5,7 @@ const { authUser, authAdmin } = require("../routes/Auth");
 
 const { ObjectId } = require("mongodb");
 
-router.get("/", authUser, authAdmin, async (req, res) => {
+router.get("/", authUser, async (req, res) => {
   try {
     const result = await Movies.find();
     return res.send(result);
@@ -15,34 +15,29 @@ router.get("/", authUser, authAdmin, async (req, res) => {
 });
 
 router.get("/:id", authUser, async (req, res) => {
-  let id = { _id: ObjectId(req.params.id) };
   try {
-    const result = await Movies.find(id);
+    const result = await Movies.findById(req.params.id);
     return res.send(result);
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-router.post("/add", authUser, authAdmin, async (req, res) => {
+router.post("/add", ...authAdmin, async (req, res) => {
   try {
-    const duplicate = await Movies.findOne({ title: req.body.title });
-    if (!duplicate) {
-      const newMovie = await Movies.create({
-        title: req.body.title,
-        genre: req.body.genre,
-        relasedate: req.body.relasedate,
-        director: req.body.director,
-        actors: req.body.actors,
-        time: req.body.time,
-        poster: req.body.poster,
-        trailer: req.body.trailer,
-      });
-      return res.status(201).send({ newMovie: newMovie.id });
-    }
-    return res.status(401).send("This movie already exists");
+    const newMovie = await Movies.create({
+      title: req.body.title,
+      genre: req.body.genre,
+      relasedate: req.body.relasedate,
+      director: req.body.director,
+      actors: req.body.actors,
+      time: req.body.time,
+      poster: req.body.poster,
+      trailer: req.body.trailer,
+    });
+    return res.status(201).send(newMovie);
   } catch (err) {
-    res.status(500).send(err);
+    res.status(500).send({ message: "Failed to create the movie", err });
   }
 });
 

@@ -7,7 +7,7 @@ const { authUser, authAdmin } = require("../routes/Auth");
 const ObjectId = require("mongodb").ObjectId;
 //const { registerValidation, loginValidation } = require("../validation");
 
-router.get("/", authUser, authAdmin, async (req, res) => {
+router.get("/", ...authAdmin, async (req, res) => {
   try {
     const result = await Users.find();
     return res.send(result);
@@ -43,10 +43,7 @@ router.post("/login", async (req, res) => {
     const validPass = await bcrypt.compare(req.body.password, user.password);
     if (!validPass) return res.status(400).send("Invalid password");
 
-    const token = jwt.sign(
-      { userInfo: { _id: user._id, role: user.role } },
-      "xd"
-    );
+    const token = jwt.sign({ id: user._id }, "xd");
 
     res.header("auth-token", token).send(token);
   } catch (err) {

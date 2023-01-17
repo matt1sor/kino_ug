@@ -7,8 +7,10 @@ const nameSchema = new mongoose.Schema({
 
 const moviesSchema = new mongoose.Schema({
   title: {
+    unique: true,
     type: String,
     required: true,
+    trim: true,
   },
   genre: {
     type: String,

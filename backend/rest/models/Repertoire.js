@@ -2,8 +2,9 @@ const mongoose = require("mongoose");
 
 const repetoireSchema = new mongoose.Schema(
   {
-    movieTitle: {
-      type: String,
+    movie: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Movie",
       required: true,
     },
     day: {
