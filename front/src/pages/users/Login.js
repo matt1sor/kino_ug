@@ -4,9 +4,11 @@ import { useDispatch } from "react-redux";
 import * as Yup from "yup";
 import { Fragment, useState } from "react";
 import { loginHandler } from "../../store/features/auth";
+import { Link, useNavigate } from "react-router-dom";
 
 function Login() {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
 
@@ -22,6 +24,8 @@ function Login() {
     onSubmit: async (values) => {
       setLoading(true);
       dispatch(loginHandler(values));
+      formik.resetForm();
+      navigate("/repertoire");
     },
   });
 
@@ -43,6 +47,7 @@ function Login() {
         />
         <button type="submit">Submit</button>
       </form>
+      <Link to="/users/register">Nie masz konta? Zarejestruj sie!</Link>
     </Fragment>
   );
 }

@@ -20,7 +20,7 @@ function Mainroutes() {
         ) : (
           <Fragment>
             <Route path="/users/login" element={<Login />} />
-            <Route path="/register" element={<RegisterForm />} />
+            <Route path="/users/register" element={<RegisterForm />} />
           </Fragment>
         )}
       </Routes>
