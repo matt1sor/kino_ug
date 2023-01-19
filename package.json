@@ -1,6 +1,6 @@
 {
   "devDependencies": {
-    "nodemon": "2.0.20",
+    "nodemon": "^2.0.20",
     "prettier": "2.8.3"
   },
   "name": "kino_ug",
@@ -8,9 +8,12 @@
   "description": "Projekt semestralny Kino",
   "main": "index.js",
   "dependencies": {
+    "@hapi/joi": "^17.1.1",
     "abbrev": "^1.1.1",
     "anymatch": "^3.1.3",
     "balanced-match": "^1.0.2",
+    "bcrypt": "^5.1.0",
+    "bcryptjs": "^2.4.3",
     "binary-extensions": "^2.2.0",
     "brace-expansion": "^1.1.11",
     "braces": "^3.0.2",
@@ -29,6 +32,8 @@
     "is-extglob": "^2.1.1",
     "is-glob": "^4.0.3",
     "is-number": "^7.0.0",
+    "joi": "^17.7.0",
+    "jsonwebtoken": "^9.0.0",
     "minimatch": "^3.1.2",
     "mongodb": "^4.13.0",
     "mongoose": "^6.8.3",
@@ -46,7 +51,8 @@
     "undefsafe": "^2.0.5"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon backend/rest/server.js"
   },
   "repository": {
     "type": "git",

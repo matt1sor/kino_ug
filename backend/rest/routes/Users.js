@@ -3,7 +3,7 @@ const router = express.Router();
 const jwt = require("jsonwebtoken");
 const Users = require("../models/Users");
 const bcrypt = require("bcryptjs");
-const { authUser, authAdmin } = require("../routes/Auth");
+const { authUser, authAdmin } = require("../middleware/Auth");
 const ObjectId = require("mongodb").ObjectId;
 //const { registerValidation, loginValidation } = require("../validation");
 

@@ -1,25 +1,30 @@
-import { Route, Routes } from "react-router-dom";
-import Login from "../pages/users/Login";
+import { Route, Routes, Navigate } from "react-router-dom";
+import Login from "./pages/users/Login";
+import RegisterForm from "./pages/users/RegisterForm";
 import { useSelector } from "react-redux";
+import Repertoire from "./pages/repertoire/Repertoire";
+import { Fragment } from "react";
 
 function Mainroutes() {
   const token = useSelector((state) => state.auth.token);
   const isLoggedIn = Boolean(token);
 
   return (
-    <Routes>
-      {isLoggedIn ? (
-        <>
-        <Route path="/repertoire" element={<Repertoire/>}
-          <Route path={"*"} element={<Navigate to={"/movies"} />} />
-        </>
-      ) : (
-        <>
-          <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<RegisterForm/>}
-        </>
-      )}
-    </Routes>
+    <>
+      <Routes>
+        {isLoggedIn ? (
+          <Fragment>
+            <Route path="/repertoire" element={<Repertoire />} />
+            <Route path="*" element={<Navigate to={"/repertoire"} />} />
+          </Fragment>
+        ) : (
+          <Fragment>
+            <Route path="/users/login" element={<Login />} />
+            <Route path="/register" element={<RegisterForm />} />
+          </Fragment>
+        )}
+      </Routes>
+    </>
   );
 }
 

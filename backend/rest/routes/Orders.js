@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const { authUser, authAdmin } = require("../routes/Auth");
-const Movies = require("../models/Movies");
+const { authUser, authAdmin } = require("../middleware/Auth");
+const Orders = require("../models/Order");
 const { ObjectId } = require("mongodb");
 
 router.get("/", authUser, authAdmin, async (req, res) => {
