@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { backendInstance } from "../../backendInstance";
-import { saveToken } from "./auth";
-import { isValidElement } from "react";
 
 export const usersSlice = createSlice({
   name: "users",
