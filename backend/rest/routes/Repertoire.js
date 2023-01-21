@@ -56,7 +56,7 @@ router.delete("/:id", authUser, authAdmin, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
   try {
     await Repertoire.deleteOne(id);
-    res.status(200).send("Success!");
+    res.status(200).send(id);
   } catch (err) {
     res.status(500).send(err);
   }

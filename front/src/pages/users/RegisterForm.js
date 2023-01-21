@@ -31,6 +31,7 @@ function RegisterForm() {
   });
   return (
     <Fragment>
+      <div>Dupa</div>
       {loading && <span>Loading...</span>}
       <form onSubmit={formik.handleSubmit}>
         <input

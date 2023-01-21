@@ -10,7 +10,7 @@ const initialState = {
 };
 
 export const fetchRepertoires = createAsyncThunk(
-  "repertoire",
+  "repertoire/repFecth",
   async (payload, thunkApi) => {
     const { data } = await backendInstance.get("repertoire", {
       headers: {
@@ -21,62 +21,119 @@ export const fetchRepertoires = createAsyncThunk(
   }
 );
 
-// export const fetchRepertoires = createAsyncThunk(
-//   "repertoire/fetchRepertoires",
-//   () => {
-//     const token = useSelector((store) => store.auth.token);
-//     return axios
-//       .get("https://localhost:5556/movies", {
-//         headers: {
-//           Authorization: `Bearer ${token}`,
-//         },
-//       })
-//       .then((response) => response.data);
-//   }
-// );
+export const repertoireAdd = createAsyncThunk(
+  "repertoire/repertoireAdd",
+  async (payload, thunkApi) => {
+    const { data } = await backendInstance.post(
+      "repertoire/add",
+      {
+        movieTitle: payload.movieTitle,
+        day: payload.day,
+        time: payload.time,
+        hall: payload.hall,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${thunkApi.getState().auth.token}`,
+        },
+      }
+    );
+    return data;
+  }
+);
+
+export const repertoireEdit = createAsyncThunk(
+  "repertoire/repertoireEdit",
+  async (payload, thunkApi) => {
+    return await backendInstance.patch(
+      `repertoire/${payload.id}/edit`,
+      {
+        movieTitle: payload.movieTitle,
+        day: payload.day,
+        time: payload.time,
+        hall: payload.hall,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${thunkApi.getState().auth.token}`,
+        },
+      }
+    );
+  }
+);
+
+export const repertoireDelete = createAsyncThunk(
+  "repertoire/repertoireDelete",
+  async (payload, thunkApi) => {
+    const del = await backendInstance.delete(`repertoire/${payload}`, {
+      headers: {
+        Authorization: `Bearer ${thunkApi.getState().auth.token}`,
+      },
+    });
+    return { del, payload };
+  }
+);
 
 const repertoireSlice = createSlice({
   name: "repertoire",
   initialState,
   extraReducers: (builder) => {
-    builder.addCase(fetchRepertoires.pending, (state) => {
-      state.loading = true;
-    });
-    builder.addCase(fetchRepertoires.fulfilled, (state, action) => {
-      state.loading = false;
-      state.repertoires = action.payload;
-      state.error = "";
-    });
-    builder.addCase(fetchRepertoires.rejected, (state, action) => {
-      state.loading = false;
-      state.repertoires = [];
-      state.error = action.error.message;
-    });
+    builder
+      .addCase(fetchRepertoires.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(fetchRepertoires.fulfilled, (state, action) => {
+        state.loading = false;
+        state.repertoires = action.payload;
+
+        state.error = "";
+      })
+      .addCase(fetchRepertoires.rejected, (state, action) => {
+        state.loading = false;
+        state.repertoires = [];
+
+        state.error = action.error.message;
+      })
+
+      .addCase(repertoireAdd.pending, (state, action) => {
+        state.loading = true;
+      })
+      .addCase(repertoireAdd.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(repertoireAdd.rejected, (state, action) => {
+        state.loading = false;
+        state.error = "";
+      })
+
+      .addCase(repertoireEdit.pending, (state, action) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(repertoireEdit.fulfilled, (state, action) => {
+        state.loading = false;
+      })
+      .addCase(repertoireEdit.rejected, (state, action) => {
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(repertoireDelete.pending, (state, action) => {
+        state.loading = true;
+        state.error = "";
+      })
+
+      .addCase(repertoireDelete.fulfilled, (state, action) => {
+        state.loading = false;
+
+        console.log(state);
+      })
+      .addCase(repertoireDelete.rejected, (state, action) => {
+        state.loading = true;
+        state.error = "";
+      });
   },
 });
-
-// export const repertoireSlice = createSlice({
-//   name: "repertoire",
-//   initialState: {
-//     rep: [],
-//   },
-//   reducers: {
-//     getRepertoire: (state, action) => {
-//       state.rep = action.payload;
-//     },
-//   },
-// });
-//
-// export const fetchRepertoires = () => async (dispatch) => {
-//   const token = useSelector((store) => store.auth.token);
-//   const res = await axios.get("https://localhost:5556/movies", {
-//     headers: {
-//       Authorization: `Bearer ${token}`,
-//     },
-//   });
-//
-//   dispatch(getRepertoire(res.data));
-// };
 
 export const { getRepertoire } = repertoireSlice.actions;
 export default repertoireSlice.reducer;
