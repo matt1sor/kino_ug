@@ -3,6 +3,7 @@ import { backendInstance } from "../../backendInstance";
 
 const initialState = {
   token: null,
+  userData: null,
 };
 
 const authSlice = createSlice({
@@ -10,7 +11,8 @@ const authSlice = createSlice({
   initialState,
   reducers: {
     saveToken: (state, action) => {
-      state.token = action.payload;
+      state.token = action.payload.token;
+      state.userData = action.payload.userData;
     },
   },
 });
@@ -21,7 +23,13 @@ export const loginHandler = (values) => async (dispatch) => {
       login: values.login,
       password: values.password,
     });
-    dispatch(saveToken(data));
+    const whoami = await backendInstance.get("users/whoami", {
+      headers: {
+        Authorization: `Bearer ${data}`,
+      },
+    });
+
+    dispatch(saveToken({ token: data, userData: whoami.data }));
   } catch (e) {}
 };
 

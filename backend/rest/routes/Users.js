@@ -78,4 +78,14 @@ router.patch("/:id/edit", authUser, async (req, res) => {
     res.status(500).send(err);
   }
 });
+
+router.get("/whoami", authUser, async (req, res) => {
+  try {
+    const result = await Users.findById(req.user._id);
+    return res.send(result);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 module.exports = router;
