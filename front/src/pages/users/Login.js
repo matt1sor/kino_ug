@@ -1,10 +1,10 @@
-import { useFormik, Formik, Field } from "formik";
+import { Formik, Field, Form } from "formik";
 import { useDispatch } from "react-redux";
-import { Fragment } from "react";
+import { Link as ReachLink } from "@reach/router";
 import * as Yup from "yup";
-import { useState } from "react";
+
 import { loginHandler } from "../../store/features/auth";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   Box,
   Button,
@@ -13,7 +13,7 @@ import {
   FormErrorMessage,
   FormLabel,
   Input,
-  InputGroup,
+  Link,
   VStack,
 } from "@chakra-ui/react";
 
@@ -21,65 +21,99 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  //const [showPassword, setShowPassword] = useState(false);
-  //
-  // const validationSchema = Yup.object({
-  //   login: Yup.string().max(50, "Login is too long!").required(),
-  //   password: Yup.string().max(100, "Wrong password!").required(),
-  // });
+  const initialValues = {
+    login: "",
+    password: "",
+  };
 
-  const formik = useFormik({
-    initialValues: {
-      login: "",
-      password: "",
-    },
-    validationSchema: Yup.object({
-      login: Yup.string().max(50, "Login is too long!").required(),
-      password: Yup.string().max(100, "Wrong password!").required(),
-    }),
-    onSubmit: async (values) => {
-      setLoading(true);
-      dispatch(loginHandler(values));
-      formik.resetForm();
-      navigate("/repertoire");
-    },
+  const validationSchema = Yup.object({
+    login: Yup.string().max(50, "Login is too long!").required(),
+    password: Yup.string().max(100, "Wrong password!").required(),
   });
+  // const submitForm = async (values, actions) => {
+  //   setLoading(true);
+  //   dispatch(loginHandler(values));
+  //   actions.resetForm();
+  //   navigate("/repertoire");
+  // };
+
+  // const formik = useFormik({
+  //   initialValues: {
+  //     login: "",
+  //     password: "",
+  //   },
+  //   validationSchema: Yup.object({
+  //     login: Yup.string().max(50, "Login is too long!").required(),
+  //     password: Yup.string().max(100, "Wrong password!").required(),
+  //   }),
+  //   onSubmit: async (values) => {
+  //     setLoading(true);
+  //     dispatch(loginHandler(values));
+  //     formik.resetForm();
+  //     navigate("/repertoire");
+  //   },
+  // });
 
   return (
     <Flex bg="gray.100" align="center" justify="center" h="100vh">
       <Box bg="white" p={6} rounded="md">
-        <form onSubmit={formik.handleSubmit}>
-          <VStack spacing={4} align="flex-start">
-            <FormControl>
-              <FormLabel htmlFor="email">Login</FormLabel>
-              <Input
-                id="login"
-                name="login"
-                type="text"
-                variant="filled"
-                onChange={formik.handleChange}
-                value={formik.values.email}
-              />
-            </FormControl>
-            <FormControl>
-              <FormLabel htmlFor="password">Password</FormLabel>
-              <Input
-                id="password"
-                name="password"
-                type="password"
-                variant="filled"
-                onChange={formik.handleChange}
-                value={formik.values.password}
-              />
-            </FormControl>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={(values) => {
+            //setLoading(true);
+            dispatch(loginHandler(values));
 
-            <Button type="submit" colorScheme="purple" width="full">
-              Login
-            </Button>
-          </VStack>
-        </form>
+            navigate("/repertoire");
+          }}
+          validationSchema={validationSchema}
+        >
+          {(formik) => (
+            <Form onSubmit={formik.handleSubmit}>
+              <VStack spacing={4} align="flex-start">
+                <FormControl
+                  isInvalid={formik.errors.login && formik.touched.login}
+                >
+                  <FormLabel htmlFor="login">Login</FormLabel>
+                  <Field
+                    as={Input}
+                    id="login"
+                    name="login"
+                    type="text"
+                    variant="filled"
+                    onChange={formik.handleChange}
+                    value={formik.values.email}
+                  />
+                  <FormErrorMessage>{formik.errors.login}</FormErrorMessage>
+                </FormControl>
+                <FormControl
+                  isInvalid={formik.errors.password && formik.touched.password}
+                >
+                  <FormLabel htmlFor="password">Password</FormLabel>
+                  <Field
+                    as={Input}
+                    id="password"
+                    name="password"
+                    type="password"
+                    variant="filled"
+                    onChange={formik.handleChange}
+                    value={formik.values.password}
+                  />
+                  <FormErrorMessage>{formik.errors.password}</FormErrorMessage>
+                </FormControl>
+
+                <Button type="submit" colorScheme="blue" width="full">
+                  Login
+                </Button>
+              </VStack>
+            </Form>
+          )}
+        </Formik>
+
+        <Link as={ReachLink} to="/users/register">
+          Nie masz konta? Zarejestruj sie!
+        </Link>
       </Box>
     </Flex>
 
