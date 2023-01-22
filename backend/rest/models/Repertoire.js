@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 
 const repetoireSchema = new mongoose.Schema(
   {
-    movie: {
+    movieId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Movies",
     },
@@ -11,9 +11,15 @@ const repetoireSchema = new mongoose.Schema(
       required: true,
     },
     time: {
-      type: Number,
+      type: String,
       required: true,
     },
+    // seats: {
+    //   type: { seat: Number, occupied: Boolean },
+    //   enum: [, "admin"],
+    //   required: true,
+    //   default: "user",
+    // },
     hall: {
       type: Number,
       required: true,

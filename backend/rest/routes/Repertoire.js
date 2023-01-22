@@ -6,7 +6,7 @@ const { ObjectId } = require("mongodb");
 
 router.get("/", authUser, async (req, res) => {
   try {
-    const result = await Repertoire.find();
+    const result = await Repertoire.find().populate("movieId");
     return res.send(result);
   } catch (err) {
     res.status(500).send(err);
@@ -16,11 +16,11 @@ router.get("/", authUser, async (req, res) => {
 router.post("/add", authUser, authAdmin, async (req, res) => {
   try {
     const exists = await Repertoire.findOne({
-      movieTitle: req.body.movieTitle,
+      movieId: req.body.movieId,
     });
     if (!exists) {
       const newScreening = await Repertoire.create({
-        movieTitle: req.body.movieTitle,
+        movieId: req.body.movieId,
         day: req.body.day,
         time: req.body.time,
         hall: req.body.hall,
