@@ -1,70 +1,123 @@
-import { useFormik } from "formik";
+import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import {
-  fetchRepertoires,
-  repertoireAdd,
-} from "../../store/features/repertoire";
-import { useDispatch, useSelector } from "react-redux";
 
-import { Fragment } from "react";
-import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useState } from "react";
+
+import {
+  Box,
+  Button,
+  Flex,
+  FormControl,
+  FormErrorMessage,
+  FormLabel,
+  Input,
+  Text,
+  VStack,
+} from "@chakra-ui/react";
+import { repertoireAdd } from "../../store/features/repertoire";
 
 function RepertoireForm() {
-  const navigate = useNavigate();
-  const isLoading = useSelector((store) => store.repertoire.loading);
   const dispatch = useDispatch();
-  const formik = useFormik({
-    initialValues: {
-      movieTitle: "",
-      day: "",
-      time: "",
-      hall: "",
-    },
-    validationSchema: Yup.object({
-      movieTitle: Yup.string().max(100, "title is too long").required(),
-      day: Yup.string().max(50, "Wrong date").required(),
-      time: Yup.string().max(100, "Wrong time").required(),
-      hall: Yup.number().positive().required(),
-    }),
-    onSubmit: (values) => {
-      dispatch(repertoireAdd(values));
-      formik.resetForm();
-      dispatch(fetchRepertoires());
-      //navigate("/repertoire");
-    },
+
+  const [loading, setLoading] = useState(false);
+
+  const initialValues = {
+    movieId: "",
+    day: "",
+    time: "",
+    hall: "",
+  };
+
+  const validationSchema = Yup.object({
+    movieId: Yup.string().max(100, "Name is too long").required(),
+    day: Yup.date().required(),
+    time: Yup.string().required(),
+    hall: Yup.number().max(100, "Password too long!").required(),
   });
 
   return (
-    <Fragment>
-      {isLoading && <span>Loading...</span>}
-      <form onSubmit={formik.handleSubmit}>
-        <input
-          id="movieTitle"
-          name="movieTitle"
-          type="text"
-          onChange={formik.handleChange}
-        />
-        <br />
-        <input id="day" name="day" type="date" onChange={formik.handleChange} />
-        <br />
-        <input
-          id="time"
-          name="time"
-          type="text"
-          onChange={formik.handleChange}
-        />
-        <br />
-        <input
-          id="hall"
-          name="hall"
-          type="number"
-          onChange={formik.handleChange}
-        />
-        <button type="submit">Submit</button>
-      </form>
-      <br />
-      <button onClick={() => navigate(-1)}>Back</button>
-    </Fragment>
+    <Flex bg="gray.100" align="center" justify="center" h="100vh">
+      <Box bg="white" p={6} rounded="md">
+        <Text align="center">Register Form</Text>
+        <Formik
+          initialValues={initialValues}
+          onSubmit={async (values, action) => {
+            setLoading(true);
+            dispatch(repertoireAdd(values));
+            action.resetForm();
+          }}
+          validationSchema={validationSchema}
+        >
+          {(formik) => (
+            <Form onSubmit={formik.handleSubmit}>
+              <VStack spacing={4} align="flex-start">
+                <FormControl
+                  isInvalid={formik.errors.name && formik.touched.name}
+                >
+                  <FormLabel htmlFor="movieId">movieId</FormLabel>
+                  <Field
+                    as={Input}
+                    id="movieId"
+                    name="movieId"
+                    type="text"
+                    variant="filled"
+                    onChange={formik.handleChange}
+                  />
+                  <FormErrorMessage>{formik.errors.movieId}</FormErrorMessage>
+                </FormControl>
+                <FormControl
+                  isInvalid={formik.errors.day && formik.touched.day}
+                >
+                  <FormLabel htmlFor="day">Day</FormLabel>
+                  <Field
+                    as={Input}
+                    id="day"
+                    name="day"
+                    type="date"
+                    variant="filled"
+                    onChange={formik.handleChange}
+                  />
+                  <FormErrorMessage>{formik.errors.day}</FormErrorMessage>
+                </FormControl>
+                <FormControl
+                  isInvalid={formik.errors.time && formik.touched.time}
+                >
+                  <FormLabel htmlFor="time">Time</FormLabel>
+                  <Field
+                    as={Input}
+                    id="time"
+                    name="time"
+                    type="time"
+                    variant="filled"
+                    onChange={formik.handleChange}
+                  />
+                  <FormErrorMessage>{formik.errors.time}</FormErrorMessage>
+                </FormControl>
+                <FormControl
+                  isInvalid={formik.errors.hall && formik.touched.hall}
+                >
+                  <FormLabel htmlFor="hall">Hall</FormLabel>
+                  <Field
+                    as={Input}
+                    id="hall"
+                    name="hall"
+                    type="number"
+                    variant="filled"
+                    onChange={formik.handleChange}
+                  />
+                  <FormErrorMessage>{formik.errors.hall}</FormErrorMessage>
+                </FormControl>
+
+                <Button type="submit" colorScheme="blue" width="full">
+                  Submit
+                </Button>
+              </VStack>
+            </Form>
+          )}
+        </Formik>
+      </Box>
+    </Flex>
   );
 }
 
