@@ -27,7 +27,7 @@ export const repertoireAdd = createAsyncThunk(
     const { data } = await backendInstance.post(
       "repertoire/add",
       {
-        movieTitle: payload.movieTitle,
+        movieId: payload.movieId,
         day: payload.day,
         time: payload.time,
         hall: payload.hall,
@@ -85,14 +85,12 @@ const repertoireSlice = createSlice({
       .addCase(fetchRepertoires.fulfilled, (state, action) => {
         state.loading = false;
         state.repertoires = action.payload;
-
         state.error = "";
       })
       .addCase(fetchRepertoires.rejected, (state, action) => {
         state.loading = false;
         state.repertoires = [];
-
-        state.error = action.error.message;
+        state.error = "error";
       })
 
       .addCase(repertoireAdd.pending, (state, action) => {
@@ -100,11 +98,12 @@ const repertoireSlice = createSlice({
       })
       .addCase(repertoireAdd.fulfilled, (state, action) => {
         state.loading = false;
+        state.reprtoires = state.reprtoires.push(action.payload);
         state.error = "";
       })
       .addCase(repertoireAdd.rejected, (state, action) => {
         state.loading = false;
-        state.error = "";
+        state.error = "Error";
       })
 
       .addCase(repertoireEdit.pending, (state, action) => {
@@ -113,6 +112,12 @@ const repertoireSlice = createSlice({
       })
       .addCase(repertoireEdit.fulfilled, (state, action) => {
         state.loading = false;
+        const { id } = action.payload;
+        if (id) {
+          state.repertoires = state.repertoires.map((rep) =>
+            rep._id === id ? action.payload : rep
+          );
+        }
       })
       .addCase(repertoireEdit.rejected, (state, action) => {
         state.loading = false;
@@ -125,8 +130,8 @@ const repertoireSlice = createSlice({
 
       .addCase(repertoireDelete.fulfilled, (state, action) => {
         state.loading = false;
-
-        console.log(state);
+        const { id } = action.payload;
+        state.repertoires = state.repertoires.filter((rep) => rep._id !== id);
       })
       .addCase(repertoireDelete.rejected, (state, action) => {
         state.loading = true;
