@@ -104,6 +104,9 @@ function Repertoire() {
                               variant="link"
                               colorScheme="blue"
                               size="sm"
+                              onClick={() =>
+                                navigate(`/repertoire/${rep._id}/edit`)
+                              }
                             >
                               Edit
                             </Button>
@@ -112,6 +115,9 @@ function Repertoire() {
                               variant="link"
                               colorScheme="red"
                               size="sm"
+                              onClick={() =>
+                                dispatch(repertoireDelete(rep._id))
+                              }
                             >
                               Delete
                             </Button>
