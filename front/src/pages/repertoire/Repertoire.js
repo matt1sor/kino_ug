@@ -71,6 +71,7 @@ function Repertoire() {
       )}
       <Flex align="center" justify="center" bg="gray.100">
         <VStack>
+          <Text>Sort by</Text>
           <Select
             value={sortBy}
             onChange={(event) => setSortBy(event.target.value)}
@@ -111,7 +112,7 @@ function Repertoire() {
                     <CardFooter justify="right">
                       <Text mr={20} mt={2}>
                         <Button
-                          onClick={() => navigate(`/movie/${rep.movieId._id}`)}
+                          //onClick={() => navigate(`/movie/${rep.movieId._id}`)}
                           color="blue.300"
                         >
                           Details
