@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from "react-redux";
-import { Fragment, useEffect } from "react";
-import { Link as ReachLink } from "@reach/router";
+import { useEffect, useState } from "react";
+
 import {
   fetchRepertoires,
   repertoireDelete,
@@ -16,7 +16,6 @@ import {
   Flex,
   Heading,
   Image,
-  Link,
   List,
   ListItem,
   Menu,
@@ -25,6 +24,7 @@ import {
   MenuGroup,
   MenuItem,
   MenuList,
+  Select,
   Stack,
   Text,
   VStack,
@@ -35,12 +35,14 @@ function Repertoire() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAdmin = useIsAdmin();
+  const [sortBy, setSortBy] = useState("hall");
+  const [dir, setDir] = useState("asc");
 
   useEffect(() => {
-    dispatch(fetchRepertoires());
-  }, [dispatch]);
+    dispatch(fetchRepertoires({ sortBy, dir }));
+  }, [dispatch, sortBy, dir]);
   return (
-    <Box bg="gray.100">
+    <Box bg="gray.100" h="100vh">
       {isAdmin && (
         <Menu>
           <MenuButton as={Button} colorScheme="blue">
@@ -48,20 +50,38 @@ function Repertoire() {
           </MenuButton>
           <MenuList>
             <MenuGroup title="Movies">
-              <MenuItem>Add Movie</MenuItem>
-              <MenuItem>See Movies </MenuItem>
+              <MenuItem onClick={() => navigate("/movies/add")}>
+                Add Movie
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/movies")}>
+                See Movies
+              </MenuItem>
             </MenuGroup>
             <MenuDivider />
             <MenuGroup title="Repertoires">
               <MenuItem onClick={() => navigate("/repertoire/add")}>
                 Add Repertoire
               </MenuItem>
+              <MenuItem onClick={() => navigate("/repertoire")}>
+                See Repertoires
+              </MenuItem>
             </MenuGroup>
           </MenuList>
         </Menu>
       )}
-      <Flex align="center" justify="center" h="100vh">
+      <Flex align="center" justify="center" bg="gray.100">
         <VStack>
+          <Select
+            value={sortBy}
+            onChange={(event) => setSortBy(event.target.value)}
+          >
+            <option value="day">Day</option>
+            <option value="hall">Hall</option>
+          </Select>
+          <Select value={dir} onChange={(event) => setDir(event.target.value)}>
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+          </Select>
           <Text fontSize="5xl" m={10}>
             REPERTOIRE
           </Text>
@@ -77,7 +97,7 @@ function Repertoire() {
                   <Image
                     objectFit="cover"
                     maxW={{ base: "100%", sm: "200px" }}
-                    src={rep.movieId.poster}
+                    src={rep.movieId?.poster}
                   />
                   <Stack>
                     <CardBody>
@@ -90,13 +110,12 @@ function Repertoire() {
 
                     <CardFooter justify="right">
                       <Text mr={20} mt={2}>
-                        <Link
-                          as={ReachLink}
-                          to={`/movie/${rep.movieId._id}`}
+                        <Button
+                          onClick={() => navigate(`/movie/${rep.movieId._id}`)}
                           color="blue.300"
                         >
                           Details
-                        </Link>
+                        </Button>
                         {isAdmin && (
                           <>
                             <Button
@@ -105,7 +124,7 @@ function Repertoire() {
                               colorScheme="blue"
                               size="sm"
                               onClick={() =>
-                                navigate(`/repertoire/${rep._id}/edit`)
+                                navigate(`/repertoire/edit/${rep._id}`)
                               }
                             >
                               Edit

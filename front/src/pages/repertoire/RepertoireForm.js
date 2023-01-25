@@ -2,7 +2,6 @@ import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
 import { useDispatch } from "react-redux";
-import { useState } from "react";
 
 import {
   Box,
@@ -15,12 +14,15 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { repertoireAdd } from "../../store/features/repertoire";
+import {
+  fetchRepertoires,
+  repertoireAdd,
+} from "../../store/features/repertoire";
+import { useNavigate } from "react-router-dom";
 
 function RepertoireForm() {
   const dispatch = useDispatch();
-
-  const [loading, setLoading] = useState(false);
+  const navigate = useNavigate();
 
   const initialValues = {
     movieId: "",
@@ -30,22 +32,23 @@ function RepertoireForm() {
   };
 
   const validationSchema = Yup.object({
-    movieId: Yup.string().max(100, "Name is too long").required(),
+    movieId: Yup.string().max(25, "movieId is too long").required(),
     day: Yup.date().required(),
     time: Yup.string().required(),
-    hall: Yup.number().max(100, "Password too long!").required(),
+    hall: Yup.number().max(10, "max hall number is 10").required().positive(),
   });
 
   return (
     <Flex bg="gray.100" align="center" justify="center" h="100vh">
       <Box bg="white" p={6} rounded="md">
-        <Text align="center">Register Form</Text>
+        <Text align="center">Repertoire Form</Text>
         <Formik
           initialValues={initialValues}
           onSubmit={async (values, action) => {
-            setLoading(true);
             dispatch(repertoireAdd(values));
             action.resetForm();
+            //dispatch(fetchRepertoires());
+            navigate("/repetoire");
           }}
           validationSchema={validationSchema}
         >
@@ -53,7 +56,7 @@ function RepertoireForm() {
             <Form onSubmit={formik.handleSubmit}>
               <VStack spacing={4} align="flex-start">
                 <FormControl
-                  isInvalid={formik.errors.name && formik.touched.name}
+                  isInvalid={formik.errors.movieId && formik.touched.movieId}
                 >
                   <FormLabel htmlFor="movieId">movieId</FormLabel>
                   <Field

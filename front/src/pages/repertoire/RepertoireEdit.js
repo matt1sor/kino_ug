@@ -1,6 +1,6 @@
 import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import { useDispatch } from "react-redux";
 import { useState } from "react";
@@ -21,17 +21,16 @@ import { repertoireEdit } from "../../store/features/repertoire";
 function RepertoireEdit() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [loading, setLoading] = useState(false);
+  const { id } = useParams();
+  //const [loading, setLoading] = useState(false);
 
   const initialValues = {
-    movieId: "",
     day: "",
     time: "",
     hall: "",
   };
 
   const validationSchema = Yup.object({
-    movieId: Yup.string().max(100, "Name is too long"),
     day: Yup.date(),
     time: Yup.string(),
     hall: Yup.number().max(100, "Password too long!"),
@@ -44,8 +43,8 @@ function RepertoireEdit() {
         <Formik
           initialValues={initialValues}
           onSubmit={async (values, action) => {
-            setLoading(true);
-            dispatch(repertoireEdit(values));
+            //setLoading(true);
+            dispatch(repertoireEdit({ ...values, id }));
             action.resetForm();
             navigate("/reprtoire");
           }}
@@ -54,20 +53,6 @@ function RepertoireEdit() {
           {(formik) => (
             <Form onSubmit={formik.handleSubmit}>
               <VStack spacing={4} align="flex-start">
-                <FormControl
-                  isInvalid={formik.errors.name && formik.touched.name}
-                >
-                  <FormLabel htmlFor="movieId">movieId</FormLabel>
-                  <Field
-                    as={Input}
-                    id="movieId"
-                    name="movieId"
-                    type="text"
-                    variant="filled"
-                    onChange={formik.handleChange}
-                  />
-                  <FormErrorMessage>{formik.errors.movieId}</FormErrorMessage>
-                </FormControl>
                 <FormControl
                   isInvalid={formik.errors.day && formik.touched.day}
                 >

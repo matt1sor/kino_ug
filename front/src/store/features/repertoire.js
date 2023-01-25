@@ -1,4 +1,5 @@
 import { backendInstance } from "../../backendInstance";
+import _ from "lodash";
 
 const createSlice = require("@reduxjs/toolkit").createSlice;
 const createAsyncThunk = require("@reduxjs/toolkit").createAsyncThunk;
@@ -11,8 +12,9 @@ const initialState = {
 
 export const fetchRepertoires = createAsyncThunk(
   "repertoire/repFecth",
-  async (payload, thunkApi) => {
+  async ({ sortBy, dir }, thunkApi) => {
     const { data } = await backendInstance.get("repertoire", {
+      params: { sortBy, dir },
       headers: {
         Authorization: `Bearer ${thunkApi.getState().auth.token}`,
       },
@@ -45,32 +47,36 @@ export const repertoireAdd = createAsyncThunk(
 export const repertoireEdit = createAsyncThunk(
   "repertoire/repertoireEdit",
   async (payload, thunkApi) => {
-    return await backendInstance.patch(
-      `repertoire/${payload.id}/edit`,
-      {
-        movieTitle: payload.movieTitle,
-        day: payload.day,
-        time: payload.time,
-        hall: payload.hall,
-      },
+    const { data } = await backendInstance.patch(
+      `repertoire/edit/${payload.id}`,
+      _.omitBy(
+        {
+          day: payload.day,
+          time: payload.time,
+          hall: payload.hall,
+        },
+        (value) => value === ""
+      ),
       {
         headers: {
           Authorization: `Bearer ${thunkApi.getState().auth.token}`,
         },
       }
     );
+
+    return data;
   }
 );
 
 export const repertoireDelete = createAsyncThunk(
   "repertoire/repertoireDelete",
   async (payload, thunkApi) => {
-    const del = await backendInstance.delete(`repertoire/${payload}`, {
+    const { data } = await backendInstance.delete(`repertoire/${payload}`, {
       headers: {
         Authorization: `Bearer ${thunkApi.getState().auth.token}`,
       },
     });
-    return { del, payload };
+    return { data, payload };
   }
 );
 
@@ -98,7 +104,7 @@ const repertoireSlice = createSlice({
       })
       .addCase(repertoireAdd.fulfilled, (state, action) => {
         state.loading = false;
-        state.reprtoires = state.reprtoires.push(action.payload);
+        state.repertoires = [...state.repertoires, action.payload];
         state.error = "";
       })
       .addCase(repertoireAdd.rejected, (state, action) => {
@@ -130,7 +136,7 @@ const repertoireSlice = createSlice({
 
       .addCase(repertoireDelete.fulfilled, (state, action) => {
         state.loading = false;
-        const { id } = action.payload;
+        const id = action.payload.payload;
         state.repertoires = state.repertoires.filter((rep) => rep._id !== id);
       })
       .addCase(repertoireDelete.rejected, (state, action) => {
