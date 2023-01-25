@@ -6,7 +6,16 @@ const { ObjectId } = require("mongodb");
 
 router.get("/", authUser, async (req, res) => {
   try {
-    const result = await Repertoire.find().populate("movieId");
+    const { sortBy, dir } = req.query;
+    const result = await Repertoire.find({}, "", {
+      sort:
+        sortBy && dir
+          ? {
+              [sortBy]: dir,
+            }
+          : {},
+    }).populate("movieId");
+
     return res.send(result);
   } catch (err) {
     res.status(500).send(err);
@@ -15,29 +24,23 @@ router.get("/", authUser, async (req, res) => {
 
 router.post("/add", authUser, authAdmin, async (req, res) => {
   try {
-    const exists = await Repertoire.findOne({
+    const newScreening = await Repertoire.create({
       movieId: req.body.movieId,
+      day: req.body.day,
+      time: req.body.time,
+      hall: req.body.hall,
     });
-    if (!exists) {
-      const newScreening = await Repertoire.create({
-        movieId: req.body.movieId,
-        day: req.body.day,
-        time: req.body.time,
-        hall: req.body.hall,
-      });
-      return res.status(201).send({ newScreening: newScreening.id });
-    }
-    return res.status(401).send("Not found in DB");
+    return res.status(201).send({ newScreening: newScreening.id });
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-router.patch("/:id/edit", authUser, authAdmin, async (req, res) => {
-  let id = { _id: ObjectId(req.params.id) };
+router.patch(`/edit/:id`, authUser, authAdmin, async (req, res) => {
+  //let id = { _id: ObjectId(req.params.id) };
+  console.log(req);
   let updatedValues = {
     $set: {
-      movieTitle: req.body.movieTitle,
       day: req.body.day,
       time: req.body.time,
       hall: req.body.hall,
@@ -45,7 +48,7 @@ router.patch("/:id/edit", authUser, authAdmin, async (req, res) => {
   };
 
   try {
-    await Repertoire.updateOne(id, updatedValues);
+    await Repertoire.updateOne(updatedValues);
     res.status(200).send("Updated!!!");
   } catch (err) {
     res.status(500).send(err);
@@ -54,6 +57,7 @@ router.patch("/:id/edit", authUser, authAdmin, async (req, res) => {
 
 router.delete("/:id", authUser, authAdmin, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
+
   try {
     await Repertoire.deleteOne(id);
     res.status(200).send(id);

@@ -6,7 +6,16 @@ const { ObjectId } = require("mongodb");
 
 router.get("/", authUser, async (req, res) => {
   try {
-    const result = await Movies.find();
+    const { sortBy, dir } = req.query;
+
+    const result = await Movies.find({}, "", {
+      sort:
+        sortBy && dir
+          ? {
+              [sortBy]: dir,
+            }
+          : {},
+    });
     return res.send(result);
   } catch (err) {
     res.status(500).send(err);
@@ -29,18 +38,19 @@ router.post("/add", ...authAdmin, async (req, res) => {
       genre: req.body.genre,
       relasedate: req.body.relasedate,
       director: req.body.director,
-      actors: req.body.actors,
-      time: req.body.time,
+      // actors: req.body.actors,
+      duration: req.body.duration,
       poster: req.body.poster,
-      trailer: req.body.trailer,
+      // trailer: req.body.trailer,
     });
     return res.status(201).send(newMovie);
   } catch (err) {
+    console.log(err);
     res.status(500).send({ message: "Failed to create the movie", err });
   }
 });
 
-router.patch("/:id/edit", authUser, authAdmin, async (req, res) => {
+router.patch("/edit/:id", ...authAdmin, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
   let updatedValues = {
     $set: {
@@ -48,10 +58,10 @@ router.patch("/:id/edit", authUser, authAdmin, async (req, res) => {
       genre: req.body.genre,
       relasedate: req.body.relasedate,
       director: req.body.director,
-      actors: req.body.actors,
-      time: req.body.time,
+      // actors: req.body.actors,
+      duration: req.body.duration,
       poster: req.body.poster,
-      trailer: req.body.trailer,
+      // trailer: req.body.trailer,
     },
   };
 

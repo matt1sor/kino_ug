@@ -7,7 +7,7 @@ const repetoireSchema = new mongoose.Schema(
       ref: "Movies",
     },
     day: {
-      type: Date,
+      type: String,
       required: true,
     },
     time: {
