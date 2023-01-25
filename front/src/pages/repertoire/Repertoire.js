@@ -94,6 +94,7 @@ function Repertoire() {
                   direction={{ base: "column", sm: "row" }}
                   overflow="hidden"
                   variant="outline"
+                  // key={rep._id}
                 >
                   <Image
                     objectFit="cover"
@@ -102,7 +103,7 @@ function Repertoire() {
                   />
                   <Stack>
                     <CardBody>
-                      <Heading>{rep.movieId.title}</Heading>
+                      <Heading>{rep.movieId?.title}</Heading>
 
                       <Text py="2">DAY: {rep.day}</Text>
                       <Text py="2">TIME: {rep.time}</Text>
