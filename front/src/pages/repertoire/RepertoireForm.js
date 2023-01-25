@@ -33,9 +33,14 @@ function RepertoireForm() {
 
   const validationSchema = Yup.object({
     movieId: Yup.string().max(25, "movieId is too long").required(),
-    day: Yup.date().required(),
+    day: Yup.date().required().min(new Date()),
     time: Yup.string().required(),
-    hall: Yup.number().max(10, "max hall number is 10").required().positive(),
+    hall: Yup.number()
+      .max(10, "max hall number is 10")
+      .required()
+      .positive()
+      .min(1)
+      .integer(),
   });
 
   return (
@@ -47,7 +52,7 @@ function RepertoireForm() {
           onSubmit={async (values, action) => {
             dispatch(repertoireAdd(values));
             action.resetForm();
-            //dispatch(fetchRepertoires());
+            dispatch(fetchRepertoires());
             navigate("/repetoire");
           }}
           validationSchema={validationSchema}
