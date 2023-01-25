@@ -1,6 +1,6 @@
 import { Formik, Field, Form } from "formik";
 import { useDispatch } from "react-redux";
-import { Link as ReachLink } from "@reach/router";
+
 import * as Yup from "yup";
 
 import { loginHandler } from "../../store/features/auth";
@@ -44,7 +44,6 @@ function Login() {
           <Formik
             initialValues={initialValues}
             onSubmit={(values) => {
-              //setLoading(true);
               dispatch(loginHandler(values));
 
               navigate("/repertoire");
@@ -97,7 +96,7 @@ function Login() {
             )}
           </Formik>
 
-          <Link as={ReachLink} to="/users/register">
+          <Link onClick={() => navigate("/users/register")}>
             Don't have an account?! Sign up now!
           </Link>
         </Box>
