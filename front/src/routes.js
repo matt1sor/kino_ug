@@ -7,6 +7,10 @@ import { Fragment } from "react";
 import RepertoireForm from "./pages/repertoire/RepertoireForm";
 import RepertoireEdit from "./pages/repertoire/RepertoireEdit";
 import { useIsAdmin } from "./hooks/useIsAdmin";
+import Movies from "./pages/movies/Movies";
+import Movie from "./pages/movies/Movie";
+import MoviesForm from "./pages/movies/MoviesForm";
+import MovieEdit from "./pages/movies/MovieEdit";
 
 function Mainroutes() {
   const token = useSelector((state) => state.auth.token);
@@ -19,12 +23,18 @@ function Mainroutes() {
         {isLoggedIn ? (
           <Fragment>
             <Route path="/repertoire" element={<Repertoire />} />
+            <Route path="/movie/:id" element={<Movie />} />
 
             {isAdmin && (
               <Route path="/repertoire/add" element={<RepertoireForm />} />
             )}
             {isAdmin && (
-              <Route path="/repertoire/:id/edit" element={<RepertoireEdit />} />
+              <Route path="/repertoire/edit/:id" element={<RepertoireEdit />} />
+            )}
+            {isAdmin && <Route path="/movies" element={<Movies />} />}
+            {isAdmin && <Route path="/movies/add" element={<MoviesForm />} />}
+            {isAdmin && (
+              <Route path="/movies/edit/:id" element={<MovieEdit />} />
             )}
 
             <Route path="*" element={<Navigate to={"/repertoire"} />} />
@@ -33,6 +43,7 @@ function Mainroutes() {
           <Fragment>
             <Route path="/users/login" element={<Login />} />
             <Route path="/users/register" element={<RegisterForm />} />
+            <Route path="*" element={<Navigate to={"/users/login"} />} />
           </Fragment>
         )}
       </Routes>
