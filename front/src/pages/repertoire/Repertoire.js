@@ -71,7 +71,7 @@ function Repertoire() {
       )}
       <Flex align="center" justify="center" bg="gray.100">
         <VStack>
-          <Text>Sort by</Text>
+          <Text>Sort options</Text>
           <Select
             value={sortBy}
             onChange={(event) => setSortBy(event.target.value)}
@@ -104,9 +104,9 @@ function Repertoire() {
                     <CardBody>
                       <Heading>{rep.movieId.title}</Heading>
 
-                      <Text py="2">Day {rep.day}</Text>
-                      <Text py="2">Time {rep.time}</Text>
-                      <Text py="2">Hall {rep.hall}</Text>
+                      <Text py="2">DAY: {rep.day}</Text>
+                      <Text py="2">TIME: {rep.time}</Text>
+                      <Text py="2">HALL: {rep.hall}</Text>
                     </CardBody>
 
                     <CardFooter justify="right">

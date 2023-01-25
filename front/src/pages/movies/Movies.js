@@ -101,11 +101,11 @@ function Movies() {
                   <Stack>
                     <CardBody>
                       <Heading>{item.title}</Heading>
-                      <Text py="2">Genre {item.genre}</Text>
-                      <Text py="2">Relasedate {item.relasedate}</Text>
-                      <Text py="2">Director {item.director}</Text>
-                      <Text py="2">Duration {item.duration}</Text>
-                      <Text py="2">MovieId {item._id}</Text>
+                      <Text py="2">GENRE: {item.genre}</Text>
+                      <Text py="2">RELEASE DATE: {item.relasedate}</Text>
+                      <Text py="2">DIRECTOR: {item.director}</Text>
+                      <Text py="2">DURATION(min): {item.duration}</Text>
+                      <Text py="2">MovieId: {item._id}</Text>
                     </CardBody>
 
                     <CardFooter justify="right">
