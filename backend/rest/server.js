@@ -34,7 +34,7 @@ mongoose
   .connect("mongodb://localhost:27017/kino")
   .then(() => {
     console.log("Connected to mongoDB");
-    ssl.listen(port, () => {
+    app.listen(port, () => {
       console.log(`App is listening at port ${port}`);
     });
   })
