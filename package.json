@@ -33,6 +33,7 @@
     "is-glob": "^4.0.3",
     "is-number": "^7.0.0",
     "joi": "^17.7.0",
+    "js-cookie": "^3.0.1",
     "jsonwebtoken": "^9.0.0",
     "minimatch": "^3.1.2",
     "mongodb": "^4.13.0",
