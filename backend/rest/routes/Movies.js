@@ -3,6 +3,7 @@ const router = express.Router();
 const Movies = require("../models/Movies");
 const { authUser, authAdmin } = require("../middleware/Auth");
 const { ObjectId } = require("mongodb");
+const Repertoire = require("../models/Repertoire");
 
 router.get("/", authUser, async (req, res) => {
   try {
@@ -16,6 +17,34 @@ router.get("/", authUser, async (req, res) => {
             }
           : {},
     });
+    return res.send(result);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+// const searchPost = async (req, res) => {
+//   const { search } = req.query;
+//   console.log(search);
+//   const filters = search ? {$or: [{title: {$regex: .*${search}.*, $options: "i"}}, {content: {$regex: .*${search}.*, $options: "i"}}]} : {_id: null};
+//   try{
+//     const posts = await Post.find(filters);
+//     res.json(posts);
+//   }
+//   catch(err){
+//     console.error(err);
+//     return res.status(500).json('error');
+//   }
+// };
+
+router.get("/search", authUser, async (req, res) => {
+  const { search } = req.query;
+  console.log(search);
+  const filters = search
+    ? { title: { $regex: `.*${search}.*`, $options: "i" } }
+    : { _id: null };
+  try {
+    const result = await Movies.find(filters);
     return res.send(result);
   } catch (err) {
     res.status(500).send(err);

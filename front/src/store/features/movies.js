@@ -26,6 +26,19 @@ export const fetchMovies = createAsyncThunk(
   }
 );
 
+export const searchMovies = createAsyncThunk(
+  "movies/searchMovies",
+  async ({ search }, thunkApi) => {
+    const { data } = await backendInstance.get("movies/search", {
+      params: { search },
+      headers: {
+        Authorization: `Bearer ${thunkApi.getState().auth.token}`,
+      },
+    });
+    return data;
+  }
+);
+
 export const fetchMovie = createAsyncThunk(
   "movies/movieFetch",
   async (payload, thunkApi) => {
@@ -110,6 +123,19 @@ const moviesSlice = createSlice({
         state.error = "";
       })
       .addCase(fetchMovies.rejected, (state, action) => {
+        state.loading = false;
+        state.movies = [];
+        state.error = "error";
+      })
+      .addCase(searchMovies.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(searchMovies.fulfilled, (state, action) => {
+        state.loading = false;
+        state.movies = action.payload;
+        state.error = "";
+      })
+      .addCase(searchMovies.rejected, (state, action) => {
         state.loading = false;
         state.movies = [];
         state.error = "error";

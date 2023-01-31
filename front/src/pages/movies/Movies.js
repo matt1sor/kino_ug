@@ -11,7 +11,9 @@ import {
   CardFooter,
   Flex,
   Heading,
+  IconButton,
   Image,
+  Input,
   Link,
   List,
   ListItem,
@@ -26,15 +28,31 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
-import { fetchMovies, movieDelete } from "../../store/features/movies";
+import {
+  fetchMovies,
+  movieDelete,
+  searchMovies,
+} from "../../store/features/movies";
+import { SearchIcon } from "@chakra-ui/icons";
 
 function Movies() {
   const [sortBy, setSortBy] = useState("title");
   const [dir, setDir] = useState("asc");
+  const [search, setSearch] = useState("");
   const movies = useSelector((state) => state.movie.movies);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const isAdmin = useIsAdmin();
+
+  const handleChange = (e) => {
+    console.log(search);
+    e.preventDefault();
+    setSearch(e.target.value);
+  };
+  const handleSearch = () => {
+    console.log(search);
+    dispatch(searchMovies({ search }));
+  };
 
   useEffect(() => {
     dispatch(fetchMovies({ sortBy, dir }));
@@ -64,6 +82,9 @@ function Movies() {
                 See Repertoires
               </MenuItem>
             </MenuGroup>
+            <MenuGroup title="Orders">
+              <MenuItem onClick={() => navigate("/order")}>See Orders</MenuItem>
+            </MenuGroup>
           </MenuList>
         </Menu>
       )}
@@ -82,6 +103,22 @@ function Movies() {
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </Select>
+
+          <Box display="flex">
+            <Input
+              variant="outline"
+              placeholder="Search..."
+              type="text"
+              onChange={handleChange}
+              value={search}
+            />
+            <IconButton
+              colorScheme="blue"
+              aria-label="Search database"
+              icon={<SearchIcon />}
+              onClick={handleSearch}
+            />
+          </Box>
           <Text fontSize="5xl" m={10}>
             MOVIES
           </Text>
