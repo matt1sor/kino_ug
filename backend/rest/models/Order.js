@@ -1,24 +1,29 @@
 const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema({
-  movie: {
+  movieTitle: {
     type: String,
     required: true,
   },
-  seat: [{ type: String, required: true }],
+  //seat: [{ type: String, required: true }],
   hall: {
     type: Number,
     required: true,
   },
-  formofpayment: {
-    type: String,
-    required: true,
-  },
+  // formofpayment: {
+  //   type: String,
+  //   required: true,
+  // },
   day: {
     type: Date,
     required: true,
   },
-  owner: {
+  time: {
+    type: String,
+    required: true,
+  },
+
+  buyer: {
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "Users",

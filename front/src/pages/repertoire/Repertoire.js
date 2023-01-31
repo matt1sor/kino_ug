@@ -3,7 +3,9 @@ import { useEffect, useState } from "react";
 
 import {
   fetchRepertoires,
+  repertoireAdd,
   repertoireDelete,
+  searchRepertoires,
 } from "../../store/features/repertoire";
 import { useNavigate } from "react-router-dom";
 import { useIsAdmin } from "../../hooks/useIsAdmin";
@@ -15,7 +17,9 @@ import {
   CardFooter,
   Flex,
   Heading,
+  IconButton,
   Image,
+  Input,
   List,
   ListItem,
   Menu,
@@ -29,6 +33,9 @@ import {
   Text,
   VStack,
 } from "@chakra-ui/react";
+import { orderAdd } from "../../store/features/order";
+import { SearchIcon } from "@chakra-ui/icons";
+import { Form, Formik } from "formik";
 
 function Repertoire() {
   const repertoire = useSelector((state) => state.repertoire.repertoires);
@@ -41,6 +48,7 @@ function Repertoire() {
   useEffect(() => {
     dispatch(fetchRepertoires({ sortBy, dir }));
   }, [dispatch, sortBy, dir]);
+
   return (
     <Box bg="gray.100" h="100vh">
       {isAdmin && (
@@ -66,6 +74,9 @@ function Repertoire() {
                 See Repertoires
               </MenuItem>
             </MenuGroup>
+            <MenuGroup title="Orders">
+              <MenuItem onClick={() => navigate("/order")}>See Orders</MenuItem>
+            </MenuGroup>
           </MenuList>
         </Menu>
       )}
@@ -83,6 +94,7 @@ function Repertoire() {
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </Select>
+
           <Text fontSize="5xl" m={10}>
             REPERTOIRE
           </Text>
@@ -145,7 +157,20 @@ function Repertoire() {
                           </>
                         )}
                       </Text>
-                      <Button variant="solid" colorScheme="blue">
+                      <Button
+                        variant="solid"
+                        colorScheme="blue"
+                        onClick={() => {
+                          const values = {
+                            movieTitle: rep.movieId.title,
+                            day: rep.day,
+                            time: rep.time,
+                            hall: rep.hall,
+                          };
+                          dispatch(orderAdd(values));
+                          alert(`You bought a ticket for ${rep.movieId.title}`);
+                        }}
+                      >
                         Buy ticket
                       </Button>
                     </CardFooter>
