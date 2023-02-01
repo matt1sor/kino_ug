@@ -65,9 +65,7 @@ router.patch("/edit/:id", authUser, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
   let updatedValues = {
     $set: {
-      name: req.body.name,
       login: req.body.login,
-      password: req.body.password,
     },
   };
 
