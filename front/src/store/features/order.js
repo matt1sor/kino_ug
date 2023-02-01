@@ -23,7 +23,7 @@ export const fetchOrders = createAsyncThunk(
 );
 
 export const orderAdd = createAsyncThunk(
-  "order/orderAdd",
+  "orders/orderAdd",
   async (payload, thunkApi) => {
     const { data } = await backendInstance.post(
       "order/add",
@@ -43,29 +43,29 @@ export const orderAdd = createAsyncThunk(
   }
 );
 
-// export const repertoireEdit = createAsyncThunk(
-//     "repertoire/repertoireEdit",
-//     async (payload, thunkApi) => {
-//         const { data } = await backendInstance.patch(
-//             `repertoire/edit/${payload.id}`,
-//             _.omitBy(
-//                 {
-//                     day: payload.day,
-//                     time: payload.time,
-//                     hall: payload.hall,
-//                 },
-//                 (value) => value === ""
-//             ),
-//             {
-//                 headers: {
-//                     Authorization: `Bearer ${thunkApi.getState().auth.token}`,
-//                 },
-//             }
-//         );
-//
-//         return data;
-//     }
-// );
+export const orderEdit = createAsyncThunk(
+  "orders/orderEdit",
+  async (payload, thunkApi) => {
+    const { data } = await backendInstance.patch(
+      `order/edit/${payload.id}`,
+      _.omitBy(
+        {
+          day: payload.day,
+          time: payload.time,
+          hall: payload.hall,
+        },
+        (value) => value === ""
+      ),
+      {
+        headers: {
+          Authorization: `Bearer ${thunkApi.getState().auth.token}`,
+        },
+      }
+    );
+
+    return data;
+  }
+);
 
 export const orderDelete = createAsyncThunk(
   "orders/orderDelete",
@@ -109,39 +109,39 @@ const orderSlice = createSlice({
       .addCase(orderAdd.rejected, (state, action) => {
         state.loading = false;
         state.error = "Error";
-      });
+      })
 
-    // .addCase(repertoireEdit.pending, (state, action) => {
-    //   state.loading = true;
-    //   state.error = "";
-    // })
-    // .addCase(repertoireEdit.fulfilled, (state, action) => {
-    //   state.loading = false;
-    //   const { id } = action.payload;
-    //   if (id) {
-    //     state.repertoires = state.repertoires.map((rep) =>
-    //       rep._id === id ? action.payload : rep
-    //     );
-    //   }
-    // })
-    // .addCase(repertoireEdit.rejected, (state, action) => {
-    //   state.loading = false;
-    //   state.error = "";
-    // })
-    // .addCase(repertoireDelete.pending, (state, action) => {
-    //   state.loading = true;
-    //   state.error = "";
-    // })
-    //
-    // .addCase(repertoireDelete.fulfilled, (state, action) => {
-    //   state.loading = false;
-    //   const id = action.payload.payload;
-    //   state.repertoires = state.repertoires.filter((rep) => rep._id !== id);
-    // })
-    // .addCase(repertoireDelete.rejected, (state, action) => {
-    //   state.loading = true;
-    //   state.error = "";
-    // });
+      .addCase(orderEdit.pending, (state, action) => {
+        state.loading = true;
+        state.error = "";
+      })
+      .addCase(orderEdit.fulfilled, (state, action) => {
+        state.loading = false;
+        const { id } = action.payload;
+        if (id) {
+          state.orders = state.orders.map((rep) =>
+            rep._id === id ? action.payload : rep
+          );
+        }
+      })
+      .addCase(orderEdit.rejected, (state, action) => {
+        state.loading = false;
+        state.error = "";
+      })
+      .addCase(orderDelete.pending, (state, action) => {
+        state.loading = true;
+        state.error = "";
+      })
+
+      .addCase(orderDelete.fulfilled, (state, action) => {
+        state.loading = false;
+        const id = action.payload.payload;
+        state.orders = state.orders.filter((rep) => rep._id !== id);
+      })
+      .addCase(orderDelete.rejected, (state, action) => {
+        state.loading = true;
+        state.error = "";
+      });
   },
 });
 

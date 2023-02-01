@@ -12,6 +12,7 @@ import Movie from "./pages/movies/Movie";
 import MoviesForm from "./pages/movies/MoviesForm";
 import MovieEdit from "./pages/movies/MovieEdit";
 import Orders from "./pages/order/Orders";
+import OrdersForm from "./pages/order/OrdersForm";
 
 function Mainroutes() {
   const token = useSelector((state) => state.auth.token);
@@ -34,6 +35,9 @@ function Mainroutes() {
             )}
             {isAdmin && <Route path="/movies" element={<Movies />} />}
             {isAdmin && <Route path="/order" element={<Orders />} />}
+            {isAdmin && (
+              <Route path="/order/edit/:id" element={<OrdersForm />} />
+            )}
             {isAdmin && <Route path="/movies/add" element={<MoviesForm />} />}
             {isAdmin && (
               <Route path="/movies/edit/:id" element={<MovieEdit />} />

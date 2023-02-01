@@ -33,7 +33,7 @@ function Orders() {
 
   useEffect(() => {
     dispatch(fetchOrders());
-  });
+  }, [dispatch]);
 
   return (
     <Box bg="gray.100">
@@ -91,15 +91,15 @@ function Orders() {
 
                     <CardFooter justify="right">
                       <Text mr={20} mt={2}>
-                        {/*<Button*/}
-                        {/*  ml={7}*/}
-                        {/*  variant="link"*/}
-                        {/*  colorScheme="blue"*/}
-                        {/*  size="sm"*/}
-                        {/*  onClick={() => navigate(`/movies/edit/${item._id}`)}*/}
-                        {/*>*/}
-                        {/*  Edit*/}
-                        {/*</Button>*/}
+                        <Button
+                          ml={7}
+                          variant="link"
+                          colorScheme="blue"
+                          size="sm"
+                          onClick={() => navigate(`/order/edit/${item._id}`)}
+                        >
+                          Edit
+                        </Button>
                         <Button
                           ml={7}
                           variant="link"
