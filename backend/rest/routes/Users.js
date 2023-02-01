@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const Users = require("../models/Users");
 const bcrypt = require("bcryptjs");
 const { authUser, authAdmin } = require("../middleware/Auth");
-const ObjectId = require("mongodb").ObjectId;
+const { ObjectId } = require("mongodb");
 //const { registerValidation, loginValidation } = require("../validation");
 
 router.get("/", ...authAdmin, async (req, res) => {
@@ -61,7 +61,7 @@ router.delete("/:id", authUser, async (req, res) => {
   }
 });
 
-router.patch("/:id/edit", authUser, async (req, res) => {
+router.patch("/edit/:id", authUser, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
   let updatedValues = {
     $set: {
