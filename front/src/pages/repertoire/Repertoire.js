@@ -34,6 +34,7 @@ import {
   VStack,
 } from "@chakra-ui/react";
 import { orderAdd } from "../../store/features/order";
+import io from "socket.io-client";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Form, Formik } from "formik";
 import Clock from "../../components/Clock";
@@ -84,6 +85,15 @@ function Repertoire() {
           </MenuList>
         </Menu>
       )}
+
+      <Button
+        ml={4}
+        variant="solid"
+        colorScheme="blue"
+        onClick={() => navigate("/chatroom")}
+      >
+        Chat room
+      </Button>
       <Flex align="center" justify="center" bg="gray.100">
         <VStack>
           <Text>Sort options</Text>
@@ -98,7 +108,6 @@ function Repertoire() {
             <option value="asc">Ascending</option>
             <option value="desc">Descending</option>
           </Select>
-
           <Text fontSize="5xl" m={10}>
             REPERTOIRE
           </Text>
