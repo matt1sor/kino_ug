@@ -37,7 +37,6 @@ import { orderAdd } from "../../store/features/order";
 import io from "socket.io-client";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Form, Formik } from "formik";
-import Clock from "../../components/Clock";
 
 function Repertoire() {
   const repertoire = useSelector((state) => state.repertoire.repertoires);
