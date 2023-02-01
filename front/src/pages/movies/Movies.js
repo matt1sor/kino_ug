@@ -85,6 +85,9 @@ function Movies() {
             <MenuGroup title="Orders">
               <MenuItem onClick={() => navigate("/order")}>See Orders</MenuItem>
             </MenuGroup>
+            <MenuGroup title="Users">
+              <MenuItem onClick={() => navigate("/users")}>See Users</MenuItem>
+            </MenuGroup>
           </MenuList>
         </Menu>
       )}

@@ -36,6 +36,7 @@ import {
 import { orderAdd } from "../../store/features/order";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Form, Formik } from "formik";
+import Clock from "../../components/Clock";
 
 function Repertoire() {
   const repertoire = useSelector((state) => state.repertoire.repertoires);
@@ -76,6 +77,9 @@ function Repertoire() {
             </MenuGroup>
             <MenuGroup title="Orders">
               <MenuItem onClick={() => navigate("/order")}>See Orders</MenuItem>
+            </MenuGroup>
+            <MenuGroup title="Users">
+              <MenuItem onClick={() => navigate("/users")}>See Users</MenuItem>
             </MenuGroup>
           </MenuList>
         </Menu>
