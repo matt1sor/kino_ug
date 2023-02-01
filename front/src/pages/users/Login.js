@@ -22,8 +22,6 @@ function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  // const [loading, setLoading] = useState(false);
-
   const initialValues = {
     login: "",
     password: "",

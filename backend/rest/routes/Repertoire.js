@@ -37,8 +37,7 @@ router.post("/add", authUser, authAdmin, async (req, res) => {
 });
 
 router.patch(`/edit/:id`, authUser, authAdmin, async (req, res) => {
-  //let id = { _id: ObjectId(req.params.id) };
-  console.log(req);
+  let id = { _id: ObjectId(req.params.id) };
   let updatedValues = {
     $set: {
       day: req.body.day,
@@ -48,7 +47,7 @@ router.patch(`/edit/:id`, authUser, authAdmin, async (req, res) => {
   };
 
   try {
-    await Repertoire.updateOne(updatedValues);
+    await Repertoire.updateOne(id, updatedValues);
     res.status(200).send("Updated!!!");
   } catch (err) {
     res.status(500).send(err);

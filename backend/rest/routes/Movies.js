@@ -3,7 +3,6 @@ const router = express.Router();
 const Movies = require("../models/Movies");
 const { authUser, authAdmin } = require("../middleware/Auth");
 const { ObjectId } = require("mongodb");
-const Repertoire = require("../models/Repertoire");
 
 router.get("/", authUser, async (req, res) => {
   try {
@@ -22,20 +21,6 @@ router.get("/", authUser, async (req, res) => {
     res.status(500).send(err);
   }
 });
-
-// const searchPost = async (req, res) => {
-//   const { search } = req.query;
-//   console.log(search);
-//   const filters = search ? {$or: [{title: {$regex: .*${search}.*, $options: "i"}}, {content: {$regex: .*${search}.*, $options: "i"}}]} : {_id: null};
-//   try{
-//     const posts = await Post.find(filters);
-//     res.json(posts);
-//   }
-//   catch(err){
-//     console.error(err);
-//     return res.status(500).json('error');
-//   }
-// };
 
 router.get("/search", authUser, async (req, res) => {
   const { search } = req.query;
@@ -67,10 +52,8 @@ router.post("/add", ...authAdmin, async (req, res) => {
       genre: req.body.genre,
       relasedate: req.body.relasedate,
       director: req.body.director,
-      // actors: req.body.actors,
       duration: req.body.duration,
       poster: req.body.poster,
-      // trailer: req.body.trailer,
     });
     return res.status(201).send(newMovie);
   } catch (err) {
@@ -87,10 +70,8 @@ router.patch("/edit/:id", ...authAdmin, async (req, res) => {
       genre: req.body.genre,
       relasedate: req.body.relasedate,
       director: req.body.director,
-      // actors: req.body.actors,
       duration: req.body.duration,
       poster: req.body.poster,
-      // trailer: req.body.trailer,
     },
   };
 

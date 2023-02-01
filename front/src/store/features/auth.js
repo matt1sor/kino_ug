@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { backendInstance } from "../../backendInstance";
-import { fetchRepertoires } from "./repertoire";
 
 const initialState = {
   token: null,
