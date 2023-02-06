@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 require("mongoose-type-url");
 
-// const nameSchema = new mongoose.Schema({
-//   name: String,
-//   lastname: String,
-// });
+const nameSchema = new mongoose.Schema({
+  name: String,
+  lastname: String,
+});
 
 const moviesSchema = new mongoose.Schema({
   title: {
@@ -21,9 +21,14 @@ const moviesSchema = new mongoose.Schema({
     type: Date,
     required: true,
   },
-  director: { type: String, required: true },
+  director: { type: nameSchema, required: true },
+  actors: { type: [nameSchema], required: true },
 
-  poster: {
+  gallery: {
+    type: [mongoose.SchemaTypes.Url],
+    required: true,
+  },
+  trailer: {
     type: mongoose.SchemaTypes.Url,
     required: true,
   },
