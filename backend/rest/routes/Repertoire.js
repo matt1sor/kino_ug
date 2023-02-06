@@ -22,6 +22,19 @@ router.get("/", authUser, async (req, res) => {
   }
 });
 
+router.get("/bydate", authUser, async (req, res) => {
+  try {
+    const date = req.body.date;
+    const result = await Repertoire.find({ day: new Date(date) }).populate(
+      "movieId"
+    );
+
+    return res.send(result);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
 router.post("/add", authUser, authAdmin, async (req, res) => {
   try {
     const newScreening = await Repertoire.create({
