@@ -52,8 +52,11 @@ router.post("/add", ...authAdmin, async (req, res) => {
       genre: req.body.genre,
       relasedate: req.body.relasedate,
       director: req.body.director,
+      actors: req.body.actors,
+      gallery: req.body.gallery,
+      trailer: req.body.trailer,
       duration: req.body.duration,
-      poster: req.body.poster,
+      //poster: req.body.poster,
     });
     return res.status(201).send(newMovie);
   } catch (err) {
@@ -83,7 +86,7 @@ router.patch("/edit/:id", ...authAdmin, async (req, res) => {
   }
 });
 
-router.delete("/:id", authUser, authAdmin, async (req, res) => {
+router.delete("/:id", ...authAdmin, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
   try {
     await Movies.deleteOne(id);
