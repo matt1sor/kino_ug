@@ -5,15 +5,15 @@ const orderSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  //seat: [{ type: String, required: true }],
+  seat: { type: Number, required: true },
   hall: {
     type: Number,
     required: true,
   },
-  // formofpayment: {
-  //   type: String,
-  //   required: true,
-  // },
+  formofpayment: {
+    type: String,
+    required: true,
+  },
   day: {
     type: Date,
     required: true,
