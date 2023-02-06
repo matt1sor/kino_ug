@@ -14,12 +14,22 @@ const repetoireSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    // seats: {
-    //   type: { seat: Number, occupied: Boolean },
-    //   enum: [, "admin"],
-    //   required: true,
-    //   default: "user",
-    // },
+    seats: {
+      type: [{ seat: Number, occupied: Boolean }],
+      required: true,
+      default: [
+        { 1: false },
+        { 2: false },
+        { 3: false },
+        { 4: false },
+        { 5: false },
+        { 6: false },
+        { 7: false },
+        { 8: false },
+        { 9: false },
+        { 10: false },
+      ],
+    },
     hall: {
       type: Number,
       required: true,
