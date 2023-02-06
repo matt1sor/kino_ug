@@ -35,7 +35,7 @@ router.get("/bydate", authUser, async (req, res) => {
   }
 });
 
-router.post("/add", authUser, authAdmin, async (req, res) => {
+router.post("/add", ...authAdmin, async (req, res) => {
   try {
     const newScreening = await Repertoire.create({
       movieId: req.body.movieId,
@@ -49,7 +49,7 @@ router.post("/add", authUser, authAdmin, async (req, res) => {
   }
 });
 
-router.patch(`/edit/:id`, authUser, authAdmin, async (req, res) => {
+router.patch(`/edit/:id`, ...authAdmin, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
   let updatedValues = {
     $set: {
@@ -67,7 +67,7 @@ router.patch(`/edit/:id`, authUser, authAdmin, async (req, res) => {
   }
 });
 
-router.delete("/:id", authUser, authAdmin, async (req, res) => {
+router.delete("/:id", ...authAdmin, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
 
   try {
