@@ -59,9 +59,12 @@ router.patch(`/edit/:id`, ...authAdmin, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
   let updatedValues = {
     $set: {
+      movieTitle: req.body.movieTitle,
+      hall: req.body.hall,
       day: req.body.day,
       time: req.body.time,
-      hall: req.body.hall,
+      seat: req.body.seat,
+      formofpayment: req.body.formofpayment,
     },
   };
 
@@ -78,7 +81,7 @@ router.delete("/:id", ...authAdmin, async (req, res) => {
 
   try {
     await Orders.deleteOne(id);
-    res.status(200).send(id);
+    res.status(200).send("Deleted!");
   } catch (err) {
     res.status(500).send(err);
   }
