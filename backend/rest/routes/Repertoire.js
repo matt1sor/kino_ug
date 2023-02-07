@@ -25,9 +25,7 @@ router.get("/", authUser, async (req, res) => {
 router.get("/bydate", authUser, async (req, res) => {
   try {
     const date = req.body.date;
-    const result = await Repertoire.find({ day: new Date(date) }).populate(
-      "movieId"
-    );
+    const result = await Repertoire.find({ day: date }).populate("movieId");
 
     return res.send(result);
   } catch (err) {
