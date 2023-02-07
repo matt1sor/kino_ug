@@ -5,7 +5,7 @@ const Orders = require("../models/Order");
 const { ObjectId } = require("mongodb");
 const fs = require("fs");
 
-router.get("/", authUser, authAdmin, async (req, res) => {
+router.get("/", ...authAdmin, async (req, res) => {
   try {
     const result = await Orders.find();
     return res.send(result);
@@ -31,6 +31,8 @@ router.post("/add", authUser, async (req, res) => {
       hall: req.body.hall,
       day: req.body.day,
       time: req.body.time,
+      seat: req.body.seat,
+      formofpayment: req.body.formofpayment,
       buyer: req.user._id,
     });
 
@@ -47,14 +49,13 @@ router.post("/add", authUser, async (req, res) => {
       console.log("Order saved into file");
     });
 
-    return res.status(201).send(newOrder);
+    return res.status(201).send({ order_nr: newOrder._id });
   } catch (err) {
     res.status(500).send(err);
   }
 });
 
-// TO EDIT
-router.patch(`/edit/:id`, authUser, authAdmin, async (req, res) => {
+router.patch(`/edit/:id`, ...authAdmin, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
   let updatedValues = {
     $set: {
@@ -72,12 +73,74 @@ router.patch(`/edit/:id`, authUser, authAdmin, async (req, res) => {
   }
 });
 
-router.delete("/:id", authUser, authAdmin, async (req, res) => {
+router.delete("/:id", ...authAdmin, async (req, res) => {
   let id = { _id: ObjectId(req.params.id) };
 
   try {
     await Orders.deleteOne(id);
     res.status(200).send(id);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+//######### statystyki
+
+router.get("/stats/day", ...authAdmin, async (req, res) => {
+  const date = req.body.day;
+
+  try {
+    const allorders = await Orders.aggregate([
+      { $match: { day: new Date(date) } },
+      { $count: "all orders" },
+    ]);
+
+    const sold_tickets_for_movie = await Orders.aggregate([
+      { $match: { day: new Date(date) } },
+      { $sortByCount: "$movieTitle" },
+    ]);
+
+    const stats = { ...allorders, sold_tickets_for_movie };
+
+    return res.send(stats);
+  } catch (err) {
+    res.status(500).send(err);
+  }
+});
+
+router.get("/stats/month", ...authAdmin, async (req, res) => {
+  const date = req.body.day;
+
+  try {
+    const allorders = await Orders.aggregate([
+      {
+        $addFields: {
+          month_document: { $month: "$day" },
+          month_date: { $month: new Date(date) },
+        },
+      },
+      {
+        $match: { $expr: { $eq: ["$month_document", "$month_date"] } },
+      },
+      { $count: "all orders" },
+    ]);
+
+    const sold_tickets_for_movie = await Orders.aggregate([
+      {
+        $addFields: {
+          month_document: { $month: "$day" },
+          month_date: { $month: new Date(date) },
+        },
+      },
+      {
+        $match: { $expr: { $eq: ["$month_document", "$month_date"] } },
+      },
+      { $sortByCount: "$movieTitle" },
+    ]);
+
+    const stats = { ...allorders, sold_tickets_for_movie };
+
+    return res.send(stats);
   } catch (err) {
     res.status(500).send(err);
   }
