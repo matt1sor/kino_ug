@@ -84,15 +84,6 @@ function Repertoire() {
           </MenuList>
         </Menu>
       )}
-
-      <Button
-        ml={4}
-        variant="solid"
-        colorScheme="blue"
-        onClick={() => navigate("/chatroom")}
-      >
-        Chat room
-      </Button>
       <Flex align="center" justify="center" bg="gray.100">
         <VStack>
           <Text>Sort options</Text>
@@ -125,6 +116,7 @@ function Repertoire() {
                     maxW={{ base: "100%", sm: "200px" }}
                     src={rep.movieId?.poster}
                   />
+
                   <Stack>
                     <CardBody>
                       <Heading>{rep.movieId?.title}</Heading>

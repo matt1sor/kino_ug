@@ -52,11 +52,8 @@ router.post("/add", ...authAdmin, async (req, res) => {
       genre: req.body.genre,
       relasedate: req.body.relasedate,
       director: req.body.director,
-      actors: req.body.actors,
-      gallery: req.body.gallery,
-      trailer: req.body.trailer,
+      poster: req.body.poster,
       duration: req.body.duration,
-      //poster: req.body.poster,
     });
     return res.status(201).send(newMovie);
   } catch (err) {

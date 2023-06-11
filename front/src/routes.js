@@ -15,7 +15,6 @@ import Orders from "./pages/order/Orders";
 import OrdersForm from "./pages/order/OrdersForm";
 import Users from "./pages/users/Users";
 import UsersEdit from "./pages/users/UsersEdit";
-import ChatRoom from "./components/ChatRoom";
 
 function Mainroutes() {
   const token = useSelector((state) => state.auth.token);
@@ -29,7 +28,6 @@ function Mainroutes() {
           <Fragment>
             <Route path="/repertoire" element={<Repertoire />} />
             <Route path="/movie/:id" element={<Movie />} />
-            <Route path="/chatroom" element={<ChatRoom />} />
             {isAdmin && (
               <Route path="/repertoire/add" element={<RepertoireForm />} />
             )}

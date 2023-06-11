@@ -11,7 +11,6 @@ import {
   Flex,
   Heading,
   Image,
-  Link,
   List,
   ListItem,
   Stack,
@@ -60,15 +59,7 @@ function Movie() {
                       <Text py="2">Genre {item.genre}</Text>
                       <Text py="2">Relasedate {item.relasedate}</Text>
                       <Text py="2">Director</Text>
-                      {/*<Text py="2">*/}
-                      {/*  Actors*/}
-                      {/*  {item.actors.map((actor) => (*/}
-                      {/*    <Text py="2" key={actor._id}>*/}
-                      {/*      {actor.name} {actor.lastname}*/}
-                      {/*    </Text>*/}
-                      {/*  ))}*/}
-                      {/*</Text>*/}
-                      <Link> Trailer {item.trailer}</Link>
+
                       <Text py="2">Duration {item.time}</Text>
                     </CardBody>
 

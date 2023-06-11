@@ -3,7 +3,6 @@ const router = express.Router();
 const { authUser, authAdmin } = require("../middleware/Auth");
 const Orders = require("../models/Order");
 const { ObjectId } = require("mongodb");
-const fs = require("fs");
 
 router.get("/", ...authAdmin, async (req, res) => {
   try {
@@ -35,20 +34,6 @@ router.post("/add", authUser, async (req, res) => {
       formofpayment: req.body.formofpayment,
       buyer: req.user._id,
     });
-
-    const logs = {
-      Buyer: req.user.login,
-      Movie: req.body.movieTitle,
-      date: new Date(),
-    };
-    const strlogs = JSON.stringify(logs);
-    fs.appendFile("../rest/logs.txt", strlogs + ", ", (err) => {
-      if (err) {
-        throw new Error(err);
-      }
-      console.log("Order saved into file");
-    });
-
     return res.status(201).send({ order_nr: newOrder._id });
   } catch (err) {
     res.status(500).send(err);
