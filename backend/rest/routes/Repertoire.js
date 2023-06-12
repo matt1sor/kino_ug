@@ -1,10 +1,12 @@
 const express = require("express");
+const { ensureGuest, ensureAuth } = require("../middleware/AuthGoogle");
+const passport = require("passport");
 const router = express.Router();
 const Repertoire = require("../models/Repertoire");
 const { authUser, authAdmin } = require("../middleware/Auth");
 const { ObjectId } = require("mongodb");
 
-router.get("/", authUser, async (req, res) => {
+router.get("/", ensureAuth, async (req, res) => {
   try {
     const { sortBy, dir } = req.query;
     const result = await Repertoire.find({}, "", {

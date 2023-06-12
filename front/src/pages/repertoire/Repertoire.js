@@ -37,6 +37,7 @@ import { orderAdd } from "../../store/features/order";
 import io from "socket.io-client";
 import { SearchIcon } from "@chakra-ui/icons";
 import { Form, Formik } from "formik";
+import { backendInstance } from "../../backendInstance";
 
 function Repertoire() {
   const repertoire = useSelector((state) => state.repertoire.repertoires);
@@ -84,6 +85,10 @@ function Repertoire() {
           </MenuList>
         </Menu>
       )}
+
+      {/*<Button colorScheme="blue" onClick={backendInstance.get("/auth/logout")}>*/}
+      {/*  Logout*/}
+      {/*</Button>*/}
       <Flex align="center" justify="center" bg="gray.100">
         <VStack>
           <Text>Sort options</Text>

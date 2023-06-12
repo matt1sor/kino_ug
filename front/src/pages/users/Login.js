@@ -21,6 +21,9 @@ import {
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const googleAuth = () => {
+    window.open("http://localhost:5556/auth/google/callback", "_self");
+  };
 
   const initialValues = {
     login: "",
@@ -93,7 +96,14 @@ function Login() {
               </Form>
             )}
           </Formik>
-
+          <Button
+            type="submit"
+            colorScheme="red"
+            width="full"
+            onClick={googleAuth}
+          >
+            Login with google
+          </Button>
           <Link onClick={() => navigate("/users/register")}>
             Don't have an account?! Sign up now!
           </Link>

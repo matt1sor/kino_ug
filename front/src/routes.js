@@ -54,6 +54,7 @@ function Mainroutes() {
         ) : (
           <Fragment>
             <Route path="/users/login" element={<Login />} />
+            <Route path="/auth/google" />
             <Route path="/users/register" element={<RegisterForm />} />
             <Route path="*" element={<Navigate to={"/users/login"} />} />
           </Fragment>
