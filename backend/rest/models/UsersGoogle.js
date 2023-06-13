@@ -9,6 +9,10 @@ const UserGoogleSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  login: {
+    type: String,
+    required: true,
+  },
   firstName: {
     type: String,
     required: true,

@@ -26,7 +26,7 @@ function Mainroutes() {
       <Routes>
         {isLoggedIn ? (
           <Fragment>
-            <Route path="/repertoire" element={<Repertoire />} />
+            {/*<Route path="/repertoire" element={<Repertoire />} />*/}
             <Route path="/movie/:id" element={<Movie />} />
             {isAdmin && (
               <Route path="/repertoire/add" element={<RepertoireForm />} />
@@ -53,6 +53,7 @@ function Mainroutes() {
           </Fragment>
         ) : (
           <Fragment>
+            <Route path="/repertoire" element={<Repertoire />} />
             <Route path="/users/login" element={<Login />} />
             <Route path="/auth/google" />
             <Route path="/users/register" element={<RegisterForm />} />
